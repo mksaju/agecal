@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>বয়স ক্যালকুলেটর</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* General Styles */
+    body {
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #333;
+    }
+
+    /* Calculator Card */
+    .calculator {
+      max-width: 400px;
+      width: 100%;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      background: #ffffff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-header {
+      background: #007bff;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    /* Input Fields */
+    .form-control {
+      border-radius: 10px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    /* Button */
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      background: #007bff;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #0056b3;
+    }
+
+    /* Result Section */
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #f8f9fa;
+      text-align: center;
+      font-weight: 600;
+      color: #28a745;
+      animation: slideIn 0.5s ease-in-out;
+    }
+
+    .result-line {
+      margin: 10px 0;
+      font-size: 16px;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container calculator age-calculator">
+    <div class="card">
+      <div class="card-header">
+        <h2>বয়স ক্যালকুলেটর</h2>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="birthDate" class="form-label">জন্ম তারিখ:</label>
+          <input type="date" class="form-control" id="birthDate">
+        </div>
+        <div class="mb-3">
+          <label for="presentDate" class="form-label">বর্তমান তারিখ:</label>
+          <input type="date" class="form-control" id="presentDate">
+        </div>
+        <button class="btn btn-primary" onclick="calculateAge()">ক্যালকুলেট করুন</button>
+        <div class="result" id="ageResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function calculateAge() {
+      const birthDate = new Date(document.getElementById('birthDate').value);
+      const presentDate = new Date(document.getElementById('presentDate').value);
+
+      if (isNaN(birthDate.getTime()) || isNaN(presentDate.getTime())) {
+        document.getElementById('ageResult').innerText = "সঠিক তারিখ লিখুন।";
+        return;
+      }
+
+      let ageYears = presentDate.getFullYear() - birthDate.getFullYear();
+      let ageMonths = presentDate.getMonth() - birthDate.getMonth();
+      let ageDays = presentDate.getDate() - birthDate.getDate();
+
+      // মাস এবং দিন ঠিক করা
+      if (ageDays < 0) {
+        ageMonths--;
+        ageDays += new Date(presentDate.getFullYear(), presentDate.getMonth(), 0).getDate();
+      }
+      if (ageMonths < 0) {
+        ageYears--;
+        ageMonths += 12;
+      }
+
+      document.getElementById('ageResult').innerHTML = `
+        <div class="result-line">আপনার বয়স: ${ageYears} বছর, ${ageMonths} মাস, ${ageDays} দিন</div>
+      `;
+    }
+  </script>
+</body>
+</html>
